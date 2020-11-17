@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -108,8 +109,13 @@ public class App {
         System.out.print("Task due date (YYYY-MM-DD): ");
         date = in.nextLine();
 
-        TaskItem newItem = new TaskItem(title, description, date);
-        this.activeTaskList.addTask(newItem);
+        try{
+            TaskItem newItem = new TaskItem(title, description, date);
+            this.activeTaskList.addTask(newItem);
+        } catch (IllegalArgumentException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void EditItem() {
@@ -128,10 +134,16 @@ public class App {
             }
         }
 
-        if (response < 0 || response > this.activeTaskList.getTaskListSize() - 1)
-        {
-            throw new IllegalArgumentException("Choice is outside of valid task bounds.");
+        try {
+            this.activeTaskList.getTask(response);
         }
+        catch (IllegalArgumentException e)
+        {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        in.nextLine();
 
         System.out.print("Enter a new task title for for task number " + response + ": ");
         title = in.nextLine();
@@ -142,7 +154,14 @@ public class App {
         System.out.print("Enter a new task due date (YYYY-MM-DD) for task number " + response + ": ");
         date = in.nextLine();
 
-        this.activeTaskList.editTask(response, title, description, date);
+        try{
+            this.activeTaskList.editTask(response, title, description, date);
+        }
+        catch (IllegalArgumentException e)
+        {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public void RemoveItem() {
@@ -160,19 +179,20 @@ public class App {
             }
         }
 
-        if (response < 0 || response > this.activeTaskList.getTaskListSize() - 1)
-        {
-            throw new IllegalArgumentException("Choice is outside of valid task bounds.");
+        try{
+            this.activeTaskList.removeTask(response);
         }
-
-        this.activeTaskList.removeTask(response);
+        catch (IllegalArgumentException e)
+        {
+            System.out.println(e.getMessage());
+        }
         System.out.print(this.activeTaskList.toString() + "\n");
     }
 
     public void MarkItemComplete() {
         int maxOption = this.activeTaskList.uncompletedTasks();
 
-        System.out.print(this.activeTaskList.toString() + "\nWhich task will you mark complete?\n> ");
+        System.out.print("Which task will you mark complete?\n> ");
         int response = 0;
         if (in.hasNextInt())
         {
@@ -183,21 +203,29 @@ public class App {
             while(!in.hasNextInt())
             {
                 System.out.print("Please input a valid integer response.\n\n> ");
+                try{
+                    response = in.nextInt();
+                }
+                catch(InputMismatchException e)
+                {
+                    in.nextLine();
+                }
             }
         }
 
-        if (response < 0 || response > maxOption)
-        {
-            throw new IllegalArgumentException("Task completion choice is outside of valid task bounds.");
+        try {
+            this.activeTaskList.markTaskCompleted(response);
         }
-
-        this.activeTaskList.markTaskCompleted(response);
+        catch (IllegalArgumentException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void MarkItemUncomplete() {
         int maxOption = this.activeTaskList.completedTasks();
 
-        System.out.print(this.activeTaskList.toString() + "\nWhich task will you unmark as complete?\n> ");
+        System.out.print("Which task will you unmark as complete?\n> ");
         int response = 0;
         if (in.hasNextInt())
         {
@@ -208,15 +236,24 @@ public class App {
             while(!in.hasNextInt())
             {
                 System.out.print("Please input a valid integer response.\n\n> ");
+                try{
+                    response = in.nextInt();
+                }
+                catch(InputMismatchException e)
+                {
+                    in.nextLine();
+                }
             }
         }
 
-        if (response < 0 || response > maxOption)
+        try {
+            this.activeTaskList.markTaskUncompleted(response);
+        }
+        catch (IllegalArgumentException e)
         {
-            throw new IllegalArgumentException("Task unmarking choice is outside of valid task bounds.");
+            System.out.println(e.getMessage());
         }
 
-        this.activeTaskList.markTaskUncompleted(response);
     }
 
     public void SaveList() {

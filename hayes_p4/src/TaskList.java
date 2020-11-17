@@ -143,12 +143,18 @@ public class TaskList {
         String title = "", description = "", dueDate = "";
         for(int i = 2; i < fileContents.size(); i++)
         {
-            dueDate = fileContents.get(i).substring(4,14);
+            int datePos = fileContents.get(i).indexOf('[');
+            dueDate = fileContents.get(i).substring(datePos + 1, datePos+11);
             title = fileContents.get(i).split(" ")[2];
             title = title.substring(0, title.length()-1);
-            description = fileContents.get(i).split(" ")[3];
+
+            int descPos = fileContents.get(i).indexOf(':');
+            description = fileContents.get(i).substring(descPos + 2);
             description.trim();
             TaskItem newItem = new TaskItem(title, description, dueDate);
+            if (fileContents.get(i).contains("*")) {
+                newItem.setCompleted(true);
+            }
             this.addTask(newItem);
         }
 

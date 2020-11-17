@@ -77,7 +77,7 @@ public class TaskItem {
         String completed = "";
         if (this.isCompleted())
         {
-            completed = "*** ";
+            completed = "***";
         }
         returnString = completed + "[" + this.dueDate + "] " + this.title + ": " + this.description + "\n";
         return returnString;
