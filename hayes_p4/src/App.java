@@ -121,7 +121,8 @@ public class App {
     public void EditItem() {
         String title, description, date;
         System.out.print(this.activeTaskList.toString() + "\nWhich task will you edit?\n> ");
-        int response = 0;
+        int response = -1;
+
         if (in.hasNextInt())
         {
             response = in.nextInt();
@@ -131,6 +132,13 @@ public class App {
             while(!in.hasNextInt())
             {
                 System.out.print("Please input a valid integer response.\n\n> ");
+                try{
+                    response = in.nextInt();
+                }
+                catch(InputMismatchException e)
+                {
+                    in.nextLine();
+                }
             }
         }
 
@@ -166,7 +174,7 @@ public class App {
 
     public void RemoveItem() {
         System.out.print(this.activeTaskList.toString() + "\nWhich task will you remove?\n> ");
-        int response = 0;
+        int response = -1;
         if (in.hasNextInt())
         {
             response = in.nextInt();
@@ -176,6 +184,13 @@ public class App {
             while(!in.hasNextInt())
             {
                 System.out.print("Please input a valid integer response.\n\n> ");
+                try{
+                    response = in.nextInt();
+                }
+                catch(InputMismatchException e)
+                {
+                    in.nextLine();
+                }
             }
         }
 
@@ -185,6 +200,7 @@ public class App {
         catch (IllegalArgumentException e)
         {
             System.out.println(e.getMessage());
+            return;
         }
         System.out.print(this.activeTaskList.toString() + "\n");
     }
