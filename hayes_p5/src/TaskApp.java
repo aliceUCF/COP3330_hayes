@@ -33,26 +33,6 @@ public class TaskApp extends App{
         }
     }
 
-    public int MainMenu() {
-        System.out.print("Main Menu\n_________\n\n1) create a new list\n2) load an existing list\n3) quit\n\n> ");
-        String response = in.nextLine();
-
-        while (!(response.equals("1") || response.equals("2") || response.equals("3"))) {
-            System.out.print("Please choose either '1','2', or '3'.\n\n> ");
-            response = in.nextLine();
-        }
-
-        if (response.equals("1")) {
-            return 1;
-        } else if (response.equals("2")) {
-            return 2;
-        } else if (response.equals("3")) {
-            this.AppStart();
-        }
-
-        return 0;
-    }
-
     public void ListMenu(){
         boolean exited = false;
 
