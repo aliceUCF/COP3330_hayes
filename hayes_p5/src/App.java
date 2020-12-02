@@ -27,8 +27,6 @@ public class App {
             response = in.nextLine();
         }
 
-        System.out.println("Rseponse was: " + response);
-
         if (response.equals("1")) {
             return 1;
         } else if (response.equals("2")) {
